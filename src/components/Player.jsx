@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export default function Player({ initialName, symbol }) {
+    // playerName takes the default value from the initialName prop
     const [ playerName, setPlayerName ] = useState(initialName);
     const [ isEditing, setIsEditing ] = useState(false);
 
