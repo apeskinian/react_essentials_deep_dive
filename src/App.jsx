@@ -37,6 +37,7 @@ function App() {
       </ol>
       <GameBoard onSelectSquare={handleSelectSquare} turns={gameTurns}/>
     </div>
+    {/* Sending gameTurns as a prop to update log */}
     <Log turns={gameTurns}/>
   </main>
 }
