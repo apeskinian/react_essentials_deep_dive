@@ -6,8 +6,13 @@ import Log from './components/Log.jsx';
 import GameOver from './components/GameOver.jsx';
 import { WINNING_COMBINATIONS } from './assets/winning-combinations.js';
 
+const PLAYERS = {
+  X: 'Player 1',
+  O: 'Player 2'
+};
+
 // setting an empty array for a beginning game board
-const InitialGameBoard = [
+const INITIAL_GAME_BOARD = [
     [null, null, null],
     [null, null, null],
     [null, null, null],
@@ -22,19 +27,9 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
 }
 
-function App() {
-  // managing state
-  const [players, setPlayers] = useState({
-    'X': 'Player 1',
-    'O': 'Player 2'
-  })
-  const [gameTurns, setGameTurns] = useState([]);
-
-  // getting the current player using the helper function above and sending the current gameTurns as an argument
-  const activePlayer = deriveActivePlayer(gameTurns);
-
+function deriveGameBoard(gameTurns) {
   // setting up the board initially from a copy of the empty one
-  let gameBoard = [...InitialGameBoard.map(array => [...array])];
+  let gameBoard = [...INITIAL_GAME_BOARD.map(array => [...array])];
 
   // deriving the state of the game board from the array of turns
   for (const turn of gameTurns) {
@@ -45,7 +40,10 @@ function App() {
 
       gameBoard[row][col] = player;
   }
+  return gameBoard;
+}
 
+function deriveWinner(gameBoard, players) {
   // defining the winner variable to start as null
   let winner = null;
   // checking for a winning combination by comparing the current game board to known winning combinations
@@ -64,6 +62,20 @@ function App() {
       winner = players[firstSquareSymbol];
     };
   }
+
+  return winner;
+}
+
+function App() {
+  // managing state
+  const [players, setPlayers] = useState(PLAYERS)
+  const [gameTurns, setGameTurns] = useState([]);
+  // getting the current player using the helper function above and sending the current gameTurns as an argument
+  const activePlayer = deriveActivePlayer(gameTurns);
+  // get the game board from helper function by passing the gameTurns state
+  const gameBoard = deriveGameBoard(gameTurns);
+  // derive winner from helper function by sending the current game board and players
+  const winner = deriveWinner(gameBoard, players);
   // checking for a draw if there is no winner after 9 turns as there are only 9 squares
   const hasDraw = gameTurns.length === 9 && !winner;
 
@@ -78,7 +90,6 @@ function App() {
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
         ...prevTurns
       ];
-
       return updatedTurns;
     });
   }
@@ -100,8 +111,8 @@ function App() {
   return <main>
     <div id="game-container">
       <ol id="players" className='highlight-player'>
-        <Player initialName='Player 1' symbol='X' isActive={activePlayer === 'X'} onChangeName={handlePlayerNameChange}/>
-        <Player initialName='Player 2' symbol='O' isActive={activePlayer === 'O'} onChangeName={handlePlayerNameChange}/>
+        <Player initialName={PLAYERS.X} symbol='X' isActive={activePlayer === 'X'} onChangeName={handlePlayerNameChange}/>
+        <Player initialName={PLAYERS.O} symbol='O' isActive={activePlayer === 'O'} onChangeName={handlePlayerNameChange}/>
       </ol>
       {/* Showing the GameOver component on a win */}
       {(winner || hasDraw) && <GameOver winner={winner} onRestart={handleRestart}/>}
