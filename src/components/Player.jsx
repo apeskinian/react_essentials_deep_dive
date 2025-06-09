@@ -1,12 +1,16 @@
 import { useState } from "react";
 
-export default function Player({ initialName, symbol, isActive }) {
+export default function Player({ initialName, symbol, isActive, onChangeName }) {
     // playerName takes the default value from the initialName prop
     const [ playerName, setPlayerName ] = useState(initialName);
     const [ isEditing, setIsEditing ] = useState(false);
 
     function handleEdit() {
-        setIsEditing(editing => !editing)
+        setIsEditing(editing => !editing);
+        // save the name when isEditing is true
+        if (isEditing) {
+            onChangeName(symbol, playerName);
+        }
     }
 
     // Takes a new name from the input field and sets the name with useState.
