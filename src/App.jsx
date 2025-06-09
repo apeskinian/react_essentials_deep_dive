@@ -58,7 +58,7 @@ function deriveWinner(gameBoard, players) {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      // setting the winner by accessing the players state and using the firstsquaresymbol to fetch the winner
+      // setting the winner by accessing the players state and using the firstSquareSymbol to fetch the winner
       winner = players[firstSquareSymbol];
     };
   }
