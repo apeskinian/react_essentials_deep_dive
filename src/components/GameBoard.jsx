@@ -6,7 +6,7 @@ const InitialGameBoard = [
     [null, null, null],
 ];
 
-export default function GameBoard() {
+export default function GameBoard({ onSelectSquare, symbol }) {
     const [gameBoard, setGameBoard] = useState(InitialGameBoard);
 
     function handleSelectSquare(rowIndex, colIndex){
@@ -15,10 +15,12 @@ export default function GameBoard() {
             // This updates the array in an immutable way which is best practise.
             const updatedGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
             // Replace selected square with symbol..
-            updatedGameBoard[rowIndex][colIndex] = 'X';
+            updatedGameBoard[rowIndex][colIndex] = symbol;
             // Return new board
             return updatedGameBoard;
         });
+        // Execute the handleSelectSquare function in the app component
+        onSelectSquare();
     }
 
     return <ol id="game-board">
