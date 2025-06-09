@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Player from './components/Player.jsx'
 import GameBoard from './components/GameBoard.jsx'
 import Log from './components/Log.jsx';
+import GameOver from './components/GameOver.jsx';
 import { WINNING_COMBINATIONS } from './assets/winning-combinations.js';
 
 // setting an empty array for a beginning game board
@@ -59,6 +60,8 @@ function App() {
       winner = firstSquareSymbol;
     };
   }
+  // checking for a draw if there is no winner after 9 turns as there are only 9 squares
+  const hasDraw = gameTurns.length === 9 && !winner;
 
   function handleSelectSquare(rowIndex, colIndex) {
     // updating the game turns array by adding the latest move to the array at
@@ -82,7 +85,8 @@ function App() {
         <Player initialName='Player 1' symbol='X' isActive={activePlayer === 'X'}/>
         <Player initialName='Player 2' symbol='O' isActive={activePlayer === 'O'}/>
       </ol>
-      {winner && <p>You won, {winner}!</p>}
+      {/* Showing the GameOver component on a win */}
+      {(winner || hasDraw) && <GameOver winner={winner}/>}
       <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard}/>
     </div>
     {/* Sending gameTurns as a prop to update log */}
