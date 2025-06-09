@@ -1,23 +1,5 @@
-// setting an empty array for a beginning game board
-const InitialGameBoard = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-];
+export default function GameBoard({ onSelectSquare, board }) {
 
-export default function GameBoard({ onSelectSquare, turns }) {
-    // setting up the board initially from the empty one
-    let gameBoard = InitialGameBoard
-
-    // deriving the state of the game board from the array of turns
-    for (const turn of turns) {
-        // get the turn and player from destructuring the turn
-        const { square, player } = turn;
-        // get the row and col from destructuring the square
-        const { row, col } = square;
-
-        gameBoard[row][col] = player;
-    }
 
     // OLD CODE
     // const [gameBoard, setGameBoard] = useState(InitialGameBoard);
@@ -37,7 +19,7 @@ export default function GameBoard({ onSelectSquare, turns }) {
     // }
 
     return <ol id="game-board">
-        {gameBoard.map((row, rowIndex) => <li key={rowIndex}>
+        {board.map((row, rowIndex) => <li key={rowIndex}>
             <ol>
                 {row.map((playerSymbol, colIndex) => <li key={{colIndex}}>
                     <button onClick={() => onSelectSquare(rowIndex, colIndex)} disabled={playerSymbol !== null}>
