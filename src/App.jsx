@@ -4,21 +4,26 @@ import Player from './components/Player.jsx'
 import GameBoard from './components/GameBoard.jsx'
 import Log from './components/Log.jsx';
 
+function deriveActivePlayer(gameTurns) {
+  // deriving current player from the current gameTurns state:
+  let currentPlayer = 'X';
+  if (gameTurns.length > 0 && gameTurns[0].player === 'X') {
+    currentPlayer = 'O';
+  }
+  return currentPlayer;
+}
+
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
-  const [activePlayer, setActivePlayer] = useState('X');
+  // getting the current player using the helper function above and sending the current gameTurns as an argument
+  const activePlayer = deriveActivePlayer(gameTurns);
 
   function handleSelectSquare(rowIndex, colIndex) {
-    // setting the active player to X or O depending on current set player
-    setActivePlayer((currentPlayer) => currentPlayer === 'X' ? 'O' : 'X')
     // updating the game turns array by adding the latest move to the array at
     // the front of an immutable copy of the current array
     setGameTurns(prevTurns => {
-      let currentPlayer = 'X'
-      // checking for first move and changing player accordingly
-      if (prevTurns.length > 0 && prevTurns[0].player === 'X') {
-        currentPlayer = 'O'
-      }
+      // getting current player from the prevTurns using the helper function above and passing prevTurns instead of gameTurns
+      const currentPlayer = deriveActivePlayer(prevTurns);
       // create new copy of array with latest move added to the beginning
       const updatedTurns = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },

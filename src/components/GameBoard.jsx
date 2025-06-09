@@ -1,3 +1,4 @@
+// setting an empty array for a beginning game board
 const InitialGameBoard = [
     [null, null, null],
     [null, null, null],
